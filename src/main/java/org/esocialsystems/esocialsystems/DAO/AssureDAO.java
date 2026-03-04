@@ -1,29 +1,44 @@
 package org.esocialsystems.esocialsystems.DAO;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 import org.esocialsystems.esocialsystems.Model.Assure;
-
 import java.util.List;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.persistence.PersistenceContext;
 
+
+@ApplicationScoped
 public class AssureDAO {
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("eSocialPU");
 
-    public void ajouter(Assure assure) {
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.persist(assure);
-        em.getTransaction().commit();
-        em.close();
+    @PersistenceContext
+    private EntityManager em;
+
+    public void save(Assure a) { em.persist(a); }
+
+    public Assure findById(Long id) { return em.find(Assure.class, id); }
+
+    public void update(Assure a) { em.merge(a); }
+
+    public void delete(Long id) {
+        Assure a = findById(id);
+        if (a != null) em.remove(a);
     }
 
-    public List<Assure> trouverParEmployeur(Long employeurId) {
-        EntityManager em = emf.createEntityManager();
-        List<Assure> list = em.createQuery("SELECT a FROM Assure a WHERE a.employeur.id = :empId", Assure.class)
-                .setParameter("empId", employeurId)
+    public List<Assure> findAll() {
+        return em.createQuery("SELECT a FROM Assure a", Assure.class)
                 .getResultList();
-        em.close();
-        return list;
+    }
+
+    public List<Assure> findByEmployeurId(Long employeurId) {
+        return em.createQuery("SELECT a FROM Assure a WHERE a.employeur.id = :id", Assure.class)
+                .setParameter("id", employeurId)
+                .getResultList();
+    }
+
+    public List<Assure> findByDeclarationId(Long declarationId) {
+        return em.createQuery(
+                        "SELECT c.assure FROM Cotisation c WHERE c.declaration.id = :id", Assure.class)
+                .setParameter("id", declarationId)
+                .getResultList();
     }
 }

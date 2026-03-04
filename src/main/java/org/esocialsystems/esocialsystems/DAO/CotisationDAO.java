@@ -1,29 +1,55 @@
 package org.esocialsystems.esocialsystems.DAO;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
-import org.esocialsystems.esocialsystems.Model.Declaration;
+import jakarta.persistence.PersistenceContext;
+import org.esocialsystems.esocialsystems.Model.Cotisation;
 
+import java.math.BigDecimal;
+import java.util.List;
+
+@ApplicationScoped
 public class CotisationDAO {
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("eSocialPU");
 
-    public boolean existeDeja(Long empId, int mois, int annee) {
-        EntityManager em = emf.createEntityManager();
-        Long count = em.createQuery("SELECT COUNT(d) FROM Declaration d WHERE d.employeur.id = :empId AND d.mois = :m AND d.annee = :a", Long.class)
-                .setParameter("empId", empId)
-                .setParameter("m", mois)
-                .setParameter("a", annee)
-                .getSingleResult();
-        em.close();
-        return count > 0;
+    @PersistenceContext
+    private EntityManager em;
+
+    public void save(Cotisation c) { em.persist(c); }
+
+    public Cotisation findById(Long id) { return em.find(Cotisation.class, id); }
+
+    public void update(Cotisation c) { em.merge(c); }
+
+    public void delete(Long id) {
+        Cotisation c = findById(id);
+        if (c != null) em.remove(c);
     }
 
-    public void enregistrer(Declaration d) {
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.persist(d);
-        em.getTransaction().commit();
-        em.close();
+    public List<Cotisation> findAll() {
+        return em.createQuery("SELECT c FROM Cotisation c", Cotisation.class)
+                .getResultList();
+    }
+
+    public List<Cotisation> findByDeclarationId(Long declarationId) {
+        return em.createQuery(
+                        "SELECT c FROM Cotisation c WHERE c.declaration.id = :id", Cotisation.class)
+                .setParameter("id", declarationId)
+                .getResultList();
+    }
+
+    public BigDecimal totalByAssure(Long assureId) {
+        BigDecimal total = em.createQuery(
+                        "SELECT SUM(c.cotisationSalariale + c.cotisationPatronale) FROM Cotisation c WHERE c.assure.id = :id", BigDecimal.class)
+                .setParameter("id", assureId)
+                .getSingleResult();
+        return total != null ? total : BigDecimal.ZERO;
+    }
+
+    public BigDecimal totalByEmployeur(Long employeurId) {
+        BigDecimal total = em.createQuery(
+                        "SELECT SUM(c.cotisationSalariale + c.cotisationPatronale) FROM Cotisation c WHERE c.assure.employeur.id = :id", BigDecimal.class)
+                .setParameter("id", employeurId)
+                .getSingleResult();
+        return total != null ? total : BigDecimal.ZERO;
     }
 }
