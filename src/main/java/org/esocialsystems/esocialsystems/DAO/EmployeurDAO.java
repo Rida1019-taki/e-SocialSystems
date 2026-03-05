@@ -1,24 +1,29 @@
 package org.esocialsystems.esocialsystems.DAO;
 
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import org.esocialsystems.esocialsystems.Model.Employeur;
-
 import java.util.List;
 
-@ApplicationScoped
 public class EmployeurDAO {
 
-    @PersistenceContext
     private EntityManager em;
 
-    public void save(Employeur e) {
-        em.persist(e);
+    public EmployeurDAO() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("eSocialPU");
+        this.em = emf.createEntityManager();
     }
 
-    public Employeur findById(Long id) {
-        return em.find(Employeur.class, id);
+    public void save(Employeur e) {
+        try {
+            em.getTransaction().begin();
+            em.persist(e);
+            em.getTransaction().commit();
+        } catch (Exception ex) {
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            ex.printStackTrace();
+        }
     }
 
     public List<Employeur> findAll() {
@@ -26,14 +31,32 @@ public class EmployeurDAO {
                 .getResultList();
     }
 
+    public Employeur findById(Long id) {
+        return em.find(Employeur.class, id);
+    }
+
     public void update(Employeur e) {
-        em.merge(e);
+        try {
+            em.getTransaction().begin();
+            em.merge(e);
+            em.getTransaction().commit();
+        } catch (Exception ex) {
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            ex.printStackTrace();
+        }
     }
 
     public void delete(Long id) {
-        Employeur e = findById(id);
-        if (e != null) {
-            em.remove(e);
+        try {
+            Employeur e = findById(id);
+            if (e != null) {
+                em.getTransaction().begin();
+                em.remove(e);
+                em.getTransaction().commit();
+            }
+        } catch (Exception ex) {
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            ex.printStackTrace();
         }
     }
 }

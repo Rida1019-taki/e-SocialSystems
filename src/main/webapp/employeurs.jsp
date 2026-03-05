@@ -15,7 +15,7 @@
         a.button { text-decoration: none; background: #40739e; color: #f5f6fa; padding: 8px 15px; border-radius: 5px; transition: 0.3s;}
         a.button:hover { background: #273c75; }
         form { text-align: center; margin-top: 20px; }
-        input[type=text] { padding: 8px; width: 200px; }
+        input[type=text] { padding: 8px; width: 200px; margin-right: 10px; }
         input[type=submit] { padding: 8px 15px; background: #40739e; color: #f5f6fa; border: none; border-radius: 5px; cursor: pointer;}
         input[type=submit]:hover { background: #273c75; }
     </style>
@@ -28,20 +28,27 @@
 
 <form method="post" action="employeurs">
     <input type="text" name="nom" placeholder="Nom Employeur" required>
+    <input type="text" name="raisonSociale" placeholder="Raison Sociale" required>
+    <input type="text" name="secteurActivite" placeholder="Secteur d'Activité">
     <input type="hidden" name="action" value="ajouter">
     <input type="submit" value="Ajouter">
 </form>
 
+<!-- Table des employeurs -->
 <table>
     <tr>
         <th>ID</th>
         <th>Nom</th>
+        <th>Raison Sociale</th>
+        <th>Secteur Activité</th>
         <th>Actions</th>
     </tr>
     <c:forEach var="employeur" items="${employeurs}">
         <tr>
             <td>${employeur.id}</td>
             <td>${employeur.nom}</td>
+            <td>${employeur.raisonSociale}</td>
+            <td>${employeur.secteurActivite}</td>
             <td>
                 <form method="post" action="employeurs" style="display:inline;">
                     <input type="hidden" name="action" value="supprimer">

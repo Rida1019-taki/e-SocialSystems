@@ -112,7 +112,7 @@
 <div class="dashboard">
     <div class="card">
         <h2>Employeurs</h2>
-        <a href="employeur.jsp">Gérer les Employeurs</a>
+        <a href="employeurs.jsp">Gérer les Employeurs</a>
     </div>
 
     <div class="card">
