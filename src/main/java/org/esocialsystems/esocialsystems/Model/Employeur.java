@@ -21,7 +21,6 @@ public class Employeur {
     @OneToMany(mappedBy = "employeur", cascade = CascadeType.ALL)
     private List<Declaration> declarations;
 
-    // Getters & Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

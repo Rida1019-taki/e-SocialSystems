@@ -34,7 +34,6 @@
     <input type="submit" value="Ajouter">
 </form>
 
-<!-- Table des employeurs -->
 <table>
     <tr>
         <th>ID</th>
