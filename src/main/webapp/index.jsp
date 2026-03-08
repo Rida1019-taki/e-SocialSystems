@@ -112,27 +112,27 @@
 <div class="dashboard">
     <div class="card">
         <h2>Employeurs</h2>
-        <a href="employeurs.jsp">Gérer les Employeurs</a>
+        <a href="employeurs">Gérer les Employeurs</a>
     </div>
 
     <div class="card">
         <h2>Assurés</h2>
-        <a href="assures.jsp">Gérer les Assurés</a>
+        <a href="assures">Gérer les Assurés</a>
     </div>
 
     <div class="card">
         <h2>Déclarations</h2>
-        <a href="declarations.jsp">Déclarations Mensuelles</a>
+        <a href="declarations">Déclarations Mensuelles</a>
     </div>
 
     <div class="card">
         <h2>Cotisations</h2>
-        <a href="cotisations.jsp">Calcul des Cotisations</a>
+        <a href="cotisations">Calcul des Cotisations</a>
     </div>
 
     <div class="card">
         <h2>Droits Sociaux</h2>
-        <a href="droits.jsp">Consulter Droits Sociaux</a>
+        <a href="droits">Consulter Droits Sociaux</a>
     </div>
 </div>
 

@@ -1,31 +1,26 @@
 package org.esocialsystems.esocialsystems.Servlet;
 
-import jakarta.persistence.*;
+import jakarta.persistence.EntityManager;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.esocialsystems.esocialsystems.Model.Employeur;
 import org.esocialsystems.esocialsystems.Services.EmployeurServices;
+import org.esocialsystems.esocialsystems.utils.JpaUtil;
+
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet("/employeurs")
 public class EmployeurServlet extends HttpServlet {
-    private EntityManagerFactory emf;
-
-    @Override
-    public void init() throws ServletException {
-        // Smiya khassha tkon kif li f persistence.xml
-        this.emf = Persistence.createEntityManagerFactory("eSocialPU");
-    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = JpaUtil.getEntityManager();
         try {
             EmployeurServices service = new EmployeurServices(em);
             request.setAttribute("employeurs", service.findAll());
-            // Path bidoun /WEB-INF/ hit ghadi t-khrej l-JSP l-webapp
             request.getRequestDispatcher("employeurs.jsp").forward(request, response);
         } finally {
             em.close();
@@ -35,7 +30,7 @@ public class EmployeurServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String action = request.getParameter("action");
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = JpaUtil.getEntityManager();
         try {
             em.getTransaction().begin();
             EmployeurServices service = new EmployeurServices(em);
@@ -49,7 +44,6 @@ public class EmployeurServlet extends HttpServlet {
             } else if ("supprimer".equals(action)) {
                 service.delete(Long.parseLong(request.getParameter("id")));
             }
-            // Zid hna logic dyal modifier ila bghiti...
 
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -59,10 +53,5 @@ public class EmployeurServlet extends HttpServlet {
             em.close();
         }
         response.sendRedirect(request.getContextPath() + "/employeurs");
-    }
-
-    @Override
-    public void destroy() {
-        if (emf != null) emf.close();
     }
 }

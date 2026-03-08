@@ -3,15 +3,14 @@ package org.esocialsystems.esocialsystems.DAO;
 import jakarta.persistence.EntityManager;
 import org.esocialsystems.esocialsystems.Model.Assure;
 import java.util.List;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.persistence.PersistenceContext;
 
-
-@ApplicationScoped
 public class AssureDAO {
 
-    @PersistenceContext
-    private EntityManager em;
+    private final EntityManager em;
+
+    public AssureDAO(EntityManager em) {
+        this.em = em;
+    }
 
     public void save(Assure a) { em.persist(a); }
 

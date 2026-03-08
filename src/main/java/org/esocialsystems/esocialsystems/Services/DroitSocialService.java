@@ -1,21 +1,20 @@
 package org.esocialsystems.esocialsystems.Services;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 import org.esocialsystems.esocialsystems.DAO.CotisationDAO;
 import org.esocialsystems.esocialsystems.DAO.DeclarationDAO;
 
 import java.math.BigDecimal;
 
-
-@ApplicationScoped
 public class DroitSocialService {
 
-    @Inject
-    private CotisationDAO cotisationDAO;
+    private final CotisationDAO cotisationDAO;
+    private final DeclarationDAO declarationDAO;
 
-    @Inject
-    private DeclarationDAO declarationDAO;
+    public DroitSocialService(EntityManager em) {
+        this.cotisationDAO = new CotisationDAO(em);
+        this.declarationDAO = new DeclarationDAO(em);
+    }
 
     public int nombreMoisDeclares(Long assureId) {
         return declarationDAO.countMoisByAssure(assureId);

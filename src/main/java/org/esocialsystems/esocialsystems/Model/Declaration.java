@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "declarations",
+@Table(name = "declaration",
         uniqueConstraints = @UniqueConstraint(columnNames = {"employeur_id","mois","annee"}))
 public class Declaration {
 

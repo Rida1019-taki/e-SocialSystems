@@ -1,18 +1,18 @@
 package org.esocialsystems.esocialsystems.DAO;
 
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import org.esocialsystems.esocialsystems.Model.Cotisation;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-@ApplicationScoped
 public class CotisationDAO {
 
-    @PersistenceContext
-    private EntityManager em;
+    private final EntityManager em;
+
+    public CotisationDAO(EntityManager em) {
+        this.em = em;
+    }
 
     public void save(Cotisation c) { em.persist(c); }
 

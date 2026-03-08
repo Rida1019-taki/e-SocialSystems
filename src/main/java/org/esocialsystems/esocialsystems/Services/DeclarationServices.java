@@ -1,28 +1,29 @@
 package org.esocialsystems.esocialsystems.Services;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
+import jakarta.persistence.EntityManager;
 import org.esocialsystems.esocialsystems.DAO.AssureDAO;
 import org.esocialsystems.esocialsystems.DAO.DeclarationDAO;
+import org.esocialsystems.esocialsystems.DAO.EmployeurDAO;
 import org.esocialsystems.esocialsystems.Model.Assure;
 import org.esocialsystems.esocialsystems.Model.Declaration;
+import org.esocialsystems.esocialsystems.Model.Employeur;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@ApplicationScoped
-@Transactional
 public class DeclarationServices {
 
-    @Inject
-    private DeclarationDAO declarationDAO;
+    private final DeclarationDAO declarationDAO;
+    private final AssureDAO assureDAO;
+    private final EmployeurDAO employeurDAO;
 
-    @Inject
-    private AssureDAO assureDAO;
+    public DeclarationServices(EntityManager em) {
+        this.declarationDAO = new DeclarationDAO(em);
+        this.assureDAO = new AssureDAO(em);
+        this.employeurDAO = new EmployeurDAO(em);
+    }
 
     private void verifierUnicite(Long employeurId, int mois, int annee) {
-
         boolean existe = declarationDAO
                 .existsByEmployeurMoisAnnee(employeurId, mois, annee);
 
@@ -31,7 +32,6 @@ public class DeclarationServices {
         }
     }
 
-    // ➜ Créer déclaration
     public Declaration creerDeclaration(Long employeurId,
                                         int mois,
                                         int annee,
@@ -39,27 +39,20 @@ public class DeclarationServices {
 
         verifierUnicite(employeurId, mois, annee);
 
+        Employeur employeur = employeurDAO.findById(employeurId);
+        if (employeur == null) {
+            throw new RuntimeException("Employeur non trouvé !");
+        }
+
         Declaration declaration = new Declaration();
         declaration.setMois(mois);
         declaration.setAnnee(annee);
         declaration.setDateDeclaration(dateDeclaration);
+        declaration.setEmployeur(employeur);
 
         declarationDAO.save(declaration);
 
         return declaration;
-    }
-
-    public void ajouterSalaires(Long declarationId) {
-
-        Declaration declaration = declarationDAO.findById(declarationId);
-
-        List<Assure> assures =
-                assureDAO.findByEmployeurId(
-                        declaration.getEmployeur().getId());
-
-        for (Assure a : assures) {
-            // ici on prépare cotisation automatique
-        }
     }
 
     public List<Declaration> listerDeclarations() {

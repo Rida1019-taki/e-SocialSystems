@@ -10,7 +10,7 @@ public class JpaUtil {
 
     static {
         try {
-            emf = Persistence.createEntityManagerFactory("e-social-pu");
+            emf = Persistence.createEntityManagerFactory("eSocialPU");
         } catch (Exception e) {
             throw new ExceptionInInitializerError("Erreur création EntityManagerFactory : " + e.getMessage());
         }

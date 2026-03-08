@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <html>
 <head>
     <title>Droits Sociaux</title>
@@ -32,8 +32,8 @@
         <tr>
             <td>${assure.nom}</td>
             <td>${assure.employeur.nom}</td>
-            <td>${droitSocialService.getNombreMois(assure.id)}</td>
-            <td>${droitSocialService.getTotalCotisations(assure.id)}</td>
+            <td>${moisMap[assure.id]}</td>
+            <td>${cotisMap[assure.id]}</td>
         </tr>
     </c:forEach>
 </table>

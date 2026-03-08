@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <html>
 <head>
     <title>Déclarations Mensuelles</title>
@@ -30,7 +30,7 @@
     <input type="number" name="mois" placeholder="Mois (1-12)" required>
     <input type="number" name="annee" placeholder="Année" required>
     <input type="date" name="dateDeclaration" required>
-    <input type="hidden" name="action" value="ajouter">
+    <input type="hidden" name="action" value="creer">
     <input type="submit" value="Créer Déclaration">
 </form>
 

@@ -1,17 +1,17 @@
 package org.esocialsystems.esocialsystems.DAO;
 
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import org.esocialsystems.esocialsystems.Model.Declaration;
 
 import java.util.List;
 
-@ApplicationScoped
 public class DeclarationDAO {
 
-    @PersistenceContext
-    private EntityManager em;
+    private final EntityManager em;
+
+    public DeclarationDAO(EntityManager em) {
+        this.em = em;
+    }
 
     public void save(Declaration d) { em.persist(d); }
 
