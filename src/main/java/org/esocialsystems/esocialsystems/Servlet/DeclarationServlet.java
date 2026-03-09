@@ -39,12 +39,21 @@ public class DeclarationServlet extends HttpServlet {
                 Long employeurId = Long.parseLong(request.getParameter("employeurId"));
                 int mois = Integer.parseInt(request.getParameter("mois"));
                 int annee = Integer.parseInt(request.getParameter("annee"));
-                service.creerDeclaration(employeurId, mois, annee, LocalDate.now());
+                String dateStr = request.getParameter("dateDeclaration");
+                LocalDate dateDeclaration = (dateStr != null && !dateStr.isEmpty()) 
+                        ? LocalDate.parse(dateStr) 
+                        : LocalDate.now();
+                
+                service.creerDeclaration(employeurId, mois, annee, dateDeclaration);
+                request.getSession().setAttribute("message", "Déclaration créée avec succès !");
+                request.getSession().setAttribute("messageType", "success");
             }
 
             em.getTransaction().commit();
         } catch (Exception ex) {
             if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            request.getSession().setAttribute("message", "Erreur : " + ex.getMessage());
+            request.getSession().setAttribute("messageType", "danger");
             ex.printStackTrace();
         } finally {
             em.close();

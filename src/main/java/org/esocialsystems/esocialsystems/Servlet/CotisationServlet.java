@@ -38,11 +38,15 @@ public class CotisationServlet extends HttpServlet {
             if ("calculer".equals(action)) {
                 Long declarationId = Long.parseLong(request.getParameter("declarationId"));
                 service.calculerCotisations(declarationId);
+                request.getSession().setAttribute("message", "Cotisations calculées avec succès !");
+                request.getSession().setAttribute("messageType", "success");
             }
 
             em.getTransaction().commit();
         } catch (Exception ex) {
             if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            request.getSession().setAttribute("message", "Erreur : " + ex.getMessage());
+            request.getSession().setAttribute("messageType", "danger");
             ex.printStackTrace();
         } finally {
             em.close();
