@@ -45,7 +45,7 @@ public class DeclarationServlet extends HttpServlet {
                         : LocalDate.now();
                 
                 service.creerDeclaration(employeurId, mois, annee, dateDeclaration);
-                request.getSession().setAttribute("message", "Déclaration créée avec succès !");
+                request.getSession().setAttribute("message", "Déclaration cree avec succès !");
                 request.getSession().setAttribute("messageType", "success");
             }
 

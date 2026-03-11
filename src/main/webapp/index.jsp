@@ -159,13 +159,7 @@
             <p>Calcul et consultation des cotisations sociales.</p>
             <a href="cotisations">Accéder</a>
         </div>
-
-        <div class="card">
-            <div class="icon">⚖️</div>
-            <h2>Droits Sociaux</h2>
-            <p>Consulter les droits et prestations des assurés.</p>
-            <a href="droits">Accéder</a>
-        </div>
+        
     </div>
 </main>
 

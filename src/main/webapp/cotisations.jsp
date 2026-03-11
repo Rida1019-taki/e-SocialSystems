@@ -171,7 +171,6 @@
         <li><a href="assures">Assurés</a></li>
         <li><a href="declarations">Déclarations</a></li>
         <li><a href="cotisations" class="active">Cotisations</a></li>
-        <li><a href="droits">Droits Sociaux</a></li>
     </ul>
 </nav>
 
